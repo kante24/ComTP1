@@ -152,7 +152,7 @@ function rechercheID($login)
 function publierAnnoncePublique()
 {
     if (isset($_POST["publier"])) {
-        if (empty($_POST['description']) or empty($_POST['date']) ) {
+        if (empty($_POST['description']) or empty($_POST['date'])) {
             echo"<center>Veuillez remplir tous les champs SVP</center>";
         } else {
             $db = connexion();
@@ -167,7 +167,7 @@ function publierAnnoncePublique()
 function publierAnnoncePrive()
 {
     if (isset($_POST["publierPrive"])) {
-        if (empty($_POST['description']) or empty($_POST['date']) or empty($_POST['login']) ) {
+        if (empty($_POST['description']) or empty($_POST['date']) or empty($_POST['login'])) {
             echo"<center>Veuillez remplir tous les champs SVP</center>";
         } else {
             $db = connexion();
@@ -175,6 +175,136 @@ function publierAnnoncePrive()
             $AnnonceManager = new AnnonceManager($db);
             $AnnonceManager->creerAnnoncePrivee($annonce);
             echo "<center>Annonce publiée</center>";
+        }
+    }
+}
+
+function RechercheUser()
+{
+    if (isset($_POST["rechercheUser"])) {
+        if (empty($_POST['login'])) {
+            echo"<center>Veuillez remplir le champs de login SVP</center>";
+        } else {
+            $db = connexion();
+            $UtilisateurManager = new UtilisateurManager($db);
+            $results=$UtilisateurManager->rechercheUser($_POST["login"]);
+            echo "</br></br></br>";
+            foreach ($results as $key =>$value) {
+                $Form = "";
+                $Form .='<form action="adminUtilisateur.php" method="POST">';
+                $Form .='<table>';
+                $Form .='<tr>';
+                $Form .='<td style="text-align: right;"><strong>Nom:</strong></td>';
+                $Form .='<td style="text-align: left;">';
+                $Form .='<input type="text" name="nom" value="' . $value->nom(). '" />';
+                $Form .='</td>';
+                $Form .='</tr>';
+                $Form .='<tr>';
+                $Form .='<td style="text-align: right;"><strong>Prenom:</strong></td>';
+                $Form .='<td style="text-align: left;">';
+                $Form .='<input type="text" name="prenom" value="' . $value->prenom(). '" />';
+                $Form .='</td>';
+                $Form .='</tr>';
+                $Form .='<tr>';
+                $Form .='<td style="text-align: right;"><strong>Âge:</strong></td>';
+                $Form .='<td style="text-align: left;">';
+                $Form .='<input type="text" name="age" value="' . $value->age(). '" />';
+                $Form .='</td>';
+                $Form .='</tr>';
+                $Form .='<tr>';
+                $Form .='<td style="text-align: center;">';
+                $Form .='</br><input type="submit" name="modifierUser" value="Modifier"></td>';
+                $Form .='<td style="text-align: center;">';
+                $Form .='</br><input type="submit" name="supUser" value="Suprimer"></td>';
+                $Form .='</tr>';
+                $Form .='</table>';
+                $Form .='</form>';
+                echo $Form;
+                $_SESSION["loginModife"] = $value->login() ;
+            }
+        }
+    }
+}
+
+function ModifierUser()
+{
+    if (isset($_POST["modifierUser"])) {
+        if (empty($_POST['prenom'])  or empty($_POST['nom']) or empty($_POST['age'])) {
+            echo"<center>Veuillez remplir les champs SVP</center>";
+        } else {
+            $db = connexion();
+            $Utilisateur=new Utilisateur_simple(array("nom"=>$_POST['nom'], "prenom"=>$_POST['prenom'], "age"=>$_POST['age'] ));
+            $UtilisateurManager = new UtilisateurManager($db);
+            $UtilisateurManager->modifierUser($Utilisateur);
+            echo "<center>Modification réussie</center>";
+        }
+    }
+}
+
+function SuprimerUser()
+{
+    if (isset($_POST["supUser"])) {
+        $db = connexion();
+        $UtilisateurManager = new UtilisateurManager($db);
+        $UtilisateurManager->suprimerUser();
+        echo "<center>Suppression réussie</center>";
+    }
+}
+
+function afficherAnnoncesAdmin()
+{
+    $db = connexion();
+    $AnnonceManager = new AnnonceManager($db);
+    $results=$AnnonceManager->afficherAnnonces();
+    echo "</br></br></br>";
+    foreach ($results as $key =>$value) {
+        $Form = "";
+        $Form .='<form action="adminAnnonce.php" method="POST">';
+        $Form .='<table>';
+        $Form .='<tr>';
+        $Form .='<td style="text-align: right;"><strong>Description:</strong></td>';
+        $Form .='<td style="text-align: left;">';
+        $Form .='<textarea style="height: 100px;" name="description"/> ' . $value->description(). '</textarea> ';
+        $Form .='</td>';
+        $Form .='</tr>';
+        $Form .='<tr>';
+        $Form .='<td style="text-align: right;"><strong>Date:</strong></td>';
+        $Form .='<td style="text-align: left;">';
+        $Form .='<input type="text" name="date" value="' . $value->date(). '" />';
+        $Form .='</td>';
+        $Form .='</tr>';
+        $Form .='<tr>';
+        $Form .='<td style="text-align: right;"><strong>Auter:</strong></td>';
+        $Form .='<td style="text-align: left;">';
+        $Form .='<input type="text" name="auteur" value="' . $value->auteur(). '" />';
+        $Form .='</td>';
+        $Form .='</tr>';
+        $Form .='<tr>';
+        $Form .='<td style="text-align: center;">';
+        $Form .='</br><input type="submit" name="modifierAnnonce" value="Modifier"></td>';
+        $Form .='<td style="text-align: center;">';
+        $Form .='</br><input type="submit" name="supAnnonce" value="Suprimer"></td>';
+        $Form .='<td style="text-align: center;">';
+        $Form .='</br><input type="hidden" name="id" value="' . $value->auteur(). '"></td>';
+        $Form .='</tr>';
+        $Form .='</table>';
+        $Form .='</form>';
+        $Form .='<hr></br></br></br>';
+        echo $Form;
+    }
+}
+
+function ModifierAnnonce()
+{
+    if (isset($_POST["modifierAnnonce"])) {
+        if (empty($_POST['description'])  or empty($_POST['date']) or empty($_POST['auteur'])) {
+            echo"<center>Veuillez remplir les champs SVP</center>";
+        } else {
+            $db = connexion();
+            $annonce=new Annonce_publique(array("description"=>$_POST['description'], "date"=>$_POST['date'], "auteur"=>$_POST['auteur'] ));
+            $AnnonceManager = new AnnonceManager($db);
+            $AnnonceManager->modifierAnnonce($annonce);
+            echo "<center>Modification réussie</center>";
         }
     }
 }

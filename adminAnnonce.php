@@ -1,11 +1,5 @@
 <?php
-require("Fonctions.class.php");
 require("hautAdmin.php");
-session_start();
-if (!isset($_SESSION['connexion'])) {
-    header('Location: Login.php');
-    exit;
-}
 ?>
     <!DOCTYPE html>
     <html lang="en">
@@ -27,21 +21,18 @@ if (!isset($_SESSION['connexion'])) {
                 Administration des Annonces <?=$_SESSION['nom']?>
         </U>
             </h1>
-        </Center>
-
-        <div style="margin-top: 100px;margin-right: 50px;margin-left: 50px;">
-            <div style="width:600px;float: left;border-right: 6px solid black;">
-                <Center>
-                    <h1 style="background-color: gainsboro;">
-                        <U>
-                    Annonce(s) publique(s)
+            <h1 style="background-color: gainsboro;text-align:center;margin-top:100px">
+                <U>
+                    Annonce à modifier
                 </U>
-                    </h1>
-                    <?php AnnoncesPubliques(); ?>
-                </Center>
-            </div>
-        </div>
+            </h1>
 
+            <?php afficherAnnoncesAdmin() ; 
+                  ModifierAnnonce();
+                  SuprimerUser();
+            ?>
+
+        </Center>
 
     </body>
 
