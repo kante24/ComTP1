@@ -259,7 +259,7 @@ function afficherAnnoncesAdmin()
     echo "</br></br></br>";
     foreach ($results as $key =>$value) {
         $Form = "";
-        $Form .='<form action="adminAnnonce.php" method="POST">';
+        $Form .='<form action= "'.$_SERVER['PHP_SELF'].'" method="POST">';
         $Form .='<table>';
         $Form .='<tr>';
         $Form .='<td style="text-align: right;"><strong>Description:</strong></td>';
@@ -285,7 +285,7 @@ function afficherAnnoncesAdmin()
         $Form .='<td style="text-align: center;">';
         $Form .='</br><input type="submit" name="supAnnonce" value="Suprimer"></td>';
         $Form .='<td style="text-align: center;">';
-        $Form .='</br><input type="hidden" name="id" value="' . $value->auteur(). '"></td>';
+        $Form .='</br><input type="hidden" name="id" value="' . $value->id(). '"></td>';
         $Form .='</tr>';
         $Form .='</table>';
         $Form .='</form>';
@@ -297,14 +297,33 @@ function afficherAnnoncesAdmin()
 function ModifierAnnonce()
 {
     if (isset($_POST["modifierAnnonce"])) {
+        echo "okay";
         if (empty($_POST['description'])  or empty($_POST['date']) or empty($_POST['auteur'])) {
             echo"<center>Veuillez remplir les champs SVP</center>";
         } else {
             $db = connexion();
-            $annonce=new Annonce_publique(array("description"=>$_POST['description'], "date"=>$_POST['date'], "auteur"=>$_POST['auteur'] ));
+            $annonce=new Annonce_publique(array("description"=>$_POST['description'], "date"=>$_POST['date'], "auteur"=>$_POST['auteur'], "id"=>$_POST['id'] ));
             $AnnonceManager = new AnnonceManager($db);
             $AnnonceManager->modifierAnnonce($annonce);
-            echo "<center>Modification réussie</center>";
+            echo "<center>Modification réussie</center>"; ?>
+            <script type='text/javascript'>
+                window.location.href = 'adminAnnonce.php'
+            </script>
+            <?php
         }
+    }
+}
+
+function SuprimerAnnonce()
+{
+    if (isset($_POST["supAnnonce"])) {
+        $db = connexion();
+        $AnnonceManager = new AnnonceManager($db);
+        $AnnonceManager->suprimerAnnonce();
+        echo "<center>Suppression réussie</center>"; ?>
+        <script type='text/javascript'>
+            window.location.href = 'adminAnnonce.php'
+        </script>
+        <?php
     }
 }

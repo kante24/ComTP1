@@ -54,32 +54,5 @@ require("hautAdmin.php");
     </html>
 
     <?php
-    // $Form = "";
-    // $Form .='<form action="adminUtilisateur.php" method="POST" style="margin-top:100px">';
-    // $Form .='<table>';
-    // $Form .='<tr>';
-    // $Form .='<td style="text-align: right;"><strong>Nom:</strong></td>';
-    // $Form .='<td style="text-align: left;">';
-    // $Form .='<input type="text" name="nom" value="" />';
-    // $Form .='</td>';
-    // $Form .='</tr>';
-    // $Form .='<tr>';
-    // $Form .='<td style="text-align: right;"><strong>Prenom:</strong></td>';
-    // $Form .='<td style="text-align: left;">';
-    // $Form .='<input type="text" name="nom" value="" />';
-    // $Form .='</td>';
-    // $Form .='</tr>';
-    // $Form .='<tr>';
-    // $Form .='<td style="text-align: right;"><strong>Âge:</strong></td>';
-    // $Form .='<td style="text-align: left;">';
-    // $Form .='<input type="text" name="nom" value="" />';
-    // $Form .='</td>';
-    // $Form .='</tr>';
-    // $Form .='<tr>';
-    // $Form .='<td colspan="2" style="text-align: center;">';
-    // $Form .='</br><input type="submit" name="modifierUser" value="Modifier"></td>';
-    // $Form .='</tr>';
-    // $Form .='</table>';
-    // $Form .='</form>';
-    // echo $Form;
+
     ?>

@@ -1,7 +1,5 @@
 <?php
-require("Fonctions.class.php");
 require("hautAdmin.php");
-session_start();
 if (!isset($_SESSION['connexion'])) {
     header('Location: Login.php');
     exit;

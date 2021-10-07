@@ -1,5 +1,6 @@
 <?php
 require("hautAdmin.php");
+
 ?>
     <!DOCTYPE html>
     <html lang="en">
@@ -27,9 +28,10 @@ require("hautAdmin.php");
                 </U>
             </h1>
 
-            <?php afficherAnnoncesAdmin() ; 
+            <?php 
+                  afficherAnnoncesAdmin(); 
                   ModifierAnnonce();
-                  SuprimerUser();
+                  SuprimerAnnonce();
             ?>
 
         </Center>

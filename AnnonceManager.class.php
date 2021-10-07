@@ -1,5 +1,4 @@
 <?php
-
 class AnnonceManager
 {
     //retour de l'objet de connection pdo
@@ -62,7 +61,6 @@ class AnnonceManager
 
     public function afficherAdminAnnonces()
     {
-        // $req=$this->_db->query("SELECT * FROM Annonce_publique, Annonce_prive ");
         $req=$this->_db->query("SELECT * FROM (Annonce_publique INNER JOIN Annonce_prive ON Annonce_publique.id = Annonce_prive.id) ") ;
         $annonces= array();
         while ($data=$req->fetch(PDO::FETCH_ASSOC)) {
@@ -77,9 +75,18 @@ class AnnonceManager
         $description = $annonce->description();
         $date =$annonce->date() ;
         $auteur = $annonce->auteur();
-        $id = $_POST["id"];
+        $id = $annonce->id();
         $ins=$this->_db;
         $query = $ins->prepare("UPDATE `Annonce_publique` SET `description`='$description',`date`='$date',`auteur`='$auteur' WHERE `Annonce_publique`.`id` = '$id'");
+        $query->execute() or die("<center>Erreur dans la requête</center>");
+    }
+
+
+    public function suprimerAnnonce()
+    {
+        $id = $_POST["id"];
+        $ins=$this->_db;
+        $query = $ins->prepare("DELETE FROM `Annonce_publique` WHERE `Annonce_publique`.`id` = '$id'");
         $query->execute() or die("<center>Erreur dans la requête</center>");
     }
 }
